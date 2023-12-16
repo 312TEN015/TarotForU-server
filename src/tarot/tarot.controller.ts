@@ -1,5 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { TarotInputDto, TarotOutputDto } from './dto/tarot.dto';
+import { TarotIdsDto, TarotInputDto, TarotOutputDto } from './dto/tarot.dto';
+import { Tarot } from './schema/tarot.schema';
 import { TarotService } from './tarot.service';
 
 @Controller('tarot')
@@ -29,5 +30,10 @@ export class TarotController {
   @Post('/today')
   todayTarotResult(@Body() tarot: TarotInputDto): Promise<TarotOutputDto> {
     return this.tarotService.todayTarotResult(tarot);
+  }
+
+  @Post('/my')
+  myTarotHistories(@Body() tarotIdsDto: TarotIdsDto): Promise<Tarot[]> {
+    return this.tarotService.myTarotHistories(tarotIdsDto.tarotIds);
   }
 }

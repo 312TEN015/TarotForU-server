@@ -4,17 +4,23 @@ export class TarotInputDto {
   readonly thirdAnswer: string;
   readonly cards: number[];
 }
-
 export class TarotOutputDto {
+  readonly tarotId: string;
+  readonly createdAt: string;
+  readonly tarotType: number;
+  readonly cards: number[];
   readonly cardResults: CardResult[];
   readonly overallResult: OverallResult;
+}
+
+export class TarotIdsDto {
+  readonly tarotIds: string[];
 }
 
 export interface CardResult {
   keywords: string[];
   description: string;
 }
-
 export interface OverallResult {
   summary: string;
   full: string;

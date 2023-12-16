@@ -1,5 +1,6 @@
 import { TarotCard, TarotCardKeywords } from '../constant/tarot.constant';
-import { TarotOutputDto, CardResult, OverallResult } from '../dto/tarot.dto';
+import { CardResult, OverallResult } from '../dto/tarot.dto';
+import { nanoid } from 'nanoid';
 
 const parseOutputText = (outputText: string): [string[], string] => {
   const zero = outputText.split('\n[카드해석1]');
@@ -25,19 +26,27 @@ export const getInputText = (answersInput: string, cards: number[]) => {
 };
 
 export const getTarotAnwerFromOutputText = (
+  tarotType: number,
   outputText: string,
+  cards: number[],
   tarotKeywords: string[],
-): TarotOutputDto => {
+): any => {
+  const tarotId = nanoid();
   const [cardInterpretations, overall] = parseOutputText(outputText);
   const cardResults: CardResult[] = getCardResults(
     cardInterpretations,
     tarotKeywords,
   );
 
+  const today = new Date();
+  const createdAt = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${
+    today.getDate() + 1
+  }일`;
+
   const overallParse = overall.split('"');
   const overallResult: OverallResult = {
     summary: overallParse[1],
     full: overallParse[2].trim(),
   };
-  return { cardResults, overallResult };
+  return { tarotId, tarotType, cardResults, createdAt, cards, overallResult };
 };

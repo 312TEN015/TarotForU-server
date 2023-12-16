@@ -10,10 +10,15 @@ import {
 } from './constant/preText.constant';
 import { getInputText, getTarotAnwerFromOutputText } from './util/tarot.util';
 import { ConfigService } from '@nestjs/config';
+import { TarotRepository } from './tarot.repository';
+import { Tarot } from './schema/tarot.schema';
 
 @Injectable()
 export class TarotService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private tarotRepository: TarotRepository,
+  ) {}
 
   private readonly REQUEST_URL = this.configService.get('REQUEST_URL');
   private readonly method = 'POST';
@@ -51,10 +56,16 @@ export class TarotService {
         }),
       }).then((response) => response.json());
 
-      return getTarotAnwerFromOutputText(
+      const tarotAnswer = getTarotAnwerFromOutputText(
+        1,
         response.result.outputText,
+        tarot.cards,
         tarot.cards.map((card) => TarotCardKeywords[card]),
       );
+
+      await this.tarotRepository.create(tarotAnswer);
+
+      return tarotAnswer;
     } catch (err) {
       console.log(err);
     }
@@ -74,10 +85,16 @@ export class TarotService {
         }),
       }).then((response) => response.json());
 
-      return getTarotAnwerFromOutputText(
+      const tarotAnswer = getTarotAnwerFromOutputText(
+        2,
         response.result.outputText,
+        tarot.cards,
         tarot.cards.map((card) => TarotCardKeywords[card]),
       );
+
+      await this.tarotRepository.create(tarotAnswer);
+
+      return tarotAnswer;
     } catch (err) {
       console.log(err);
     }
@@ -97,10 +114,16 @@ export class TarotService {
         }),
       }).then((response) => response.json());
 
-      return getTarotAnwerFromOutputText(
+      const tarotAnswer = getTarotAnwerFromOutputText(
+        3,
         response.result.outputText,
+        tarot.cards,
         tarot.cards.map((card) => TarotCardKeywords[card]),
       );
+
+      await this.tarotRepository.create(tarotAnswer);
+
+      return tarotAnswer;
     } catch (err) {
       console.log(err);
     }
@@ -120,10 +143,16 @@ export class TarotService {
         }),
       }).then((response) => response.json());
 
-      return getTarotAnwerFromOutputText(
+      const tarotAnswer = getTarotAnwerFromOutputText(
+        0,
         response.result.outputText,
+        tarot.cards,
         tarot.cards.map((card) => TarotCardKeywords[card]),
       );
+
+      await this.tarotRepository.create(tarotAnswer);
+
+      return tarotAnswer;
     } catch (err) {
       console.log(err);
     }
@@ -142,12 +171,27 @@ export class TarotService {
         }),
       }).then((response) => response.json());
 
-      return getTarotAnwerFromOutputText(
+      const tarotAnswer = getTarotAnwerFromOutputText(
+        4,
         response.result.outputText,
+        tarot.cards,
         tarot.cards.map((card) => TarotCardKeywords[card]),
       );
+
+      await this.tarotRepository.create(tarotAnswer);
+
+      return tarotAnswer;
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async myTarotHistories(tarotIds: string[]): Promise<Tarot[]> {
+    console.log('-----get-tarot------:', tarotIds);
+    const tarotPromises = tarotIds.map(async (id) => {
+      return await this.tarotRepository.find(id);
+    });
+    const tarotOutputs: Tarot[] = await Promise.all(tarotPromises);
+    return tarotOutputs;
   }
 }

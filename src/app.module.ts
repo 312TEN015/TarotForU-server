@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { TarotController } from './tarot/tarot.controller';
-import { TarotService } from './tarot/tarot.service';
 import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TarotModule } from './tarot/tarot.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+    TarotModule,
   ],
-  controllers: [TarotController],
-  providers: [TarotService],
 })
 export class AppModule {}
