@@ -25,13 +25,6 @@ export const getInputText = (answersInput: string, cards: number[]) => {
   return answersInput + cardsInput;
 };
 
-const getKSTDate = () => {
-  const now = new Date();
-  const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
-  const koreaTimeDiff = 9 * 60 * 60 * 1000;
-  return new Date(utcNow + koreaTimeDiff);
-};
-
 export const getTarotAnwerFromOutputText = (
   tarotType: number,
   outputText: string,
@@ -45,10 +38,7 @@ export const getTarotAnwerFromOutputText = (
     tarotKeywords,
   );
 
-  const now = getKSTDate();
-  const createdAt = `${now.getFullYear()}년 ${
-    now.getMonth() + 1
-  }월 ${now.getDate()}일`;
+  const createdAt = new Date();
 
   const overallParse = overall.split('"');
   const overallResult: OverallResult = {
