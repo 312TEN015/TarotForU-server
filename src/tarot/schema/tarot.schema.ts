@@ -27,7 +27,7 @@ export class Tarot {
   tarotId: string;
 
   @Prop()
-  createdAt: string;
+  createdAt: Date;
 
   @Prop()
   tarotType: number;

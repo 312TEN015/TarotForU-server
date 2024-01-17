@@ -6,7 +6,7 @@ export class TarotInputDto {
 }
 export class TarotOutputDto {
   readonly tarotId: string;
-  readonly createdAt: string;
+  readonly createdAt: Date;
   readonly tarotType: number;
   readonly cards: number[];
   readonly cardResults: CardResult[];
